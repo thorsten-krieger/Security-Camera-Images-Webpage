@@ -1,0 +1,6 @@
+.idea/
+bootstrap-3*/
+htdocs/css/*.gz
+htdocs/js/*.gz
+htdocs/js/fancybox/source/*.gz
+htdocs/js/fancybox/source/helpers/*.gz

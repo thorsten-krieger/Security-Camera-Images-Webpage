@@ -1,0 +1,43 @@
+
+AuthType Basic
+AuthName "Password Protected Area"
+AuthUserFile /home/instar/.htpasswd
+Require valid-user
+
+
+<FilesMatch "\.js\.gz$">
+	AddType "text/javascript" .gz
+</FilesMatch>
+<FilesMatch "\.css\.gz$">
+	AddType "text/css" .gz
+</FilesMatch>
+AddEncoding gzip .gz
+
+
+<FilesMatch "\.(js|css|js\.gz|css\.gz)$">
+	<IfModule mod_expires.c>
+		ExpiresActive on
+		ExpiresDefault "access plus 7 days"
+	</IfModule>
+	FileETag MTime Size
+</FilesMatch>
+
+
+<IfModule mod_rewrite.c>
+
+	# Enable URL rewriting
+	RewriteEngine On
+
+	# Change this path, if your TYPO3 installation is located in a subdirectory of the website root.
+	#RewriteBase /
+
+	# CSS + JS als .gz Datei ausliefern, falls moeglich
+	RewriteCond %{HTTP:Accept-encoding} gzip
+	RewriteCond %{REQUEST_FILENAME} \.(js|css)$
+	RewriteCond %{REQUEST_FILENAME}.gz -f
+	RewriteRule ^(.*)$ $1.gz [QSA,L]
+
+	# Apple Touch Icon
+	RewriteRule ^(apple-touch-icon-[0-9]+x[0-9]+)-precomposed(\.png) $1$2 [L]
+
+</IfModule>
